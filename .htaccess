@@ -1,0 +1,69 @@
+Options -Indexes 
+ErrorDocument 404 /404.php
+
+<IfModule mod_php7.c>
+  php_flag session.use_trans_sid off
+  php_value display_errors 1
+  php_value mbstring.func_overload 2
+  php_value mbstring.internal_encoding UTF-8
+  php_flag register_globals off
+  php_value max_input_vars 11000
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  Options +FollowSymLinks
+  RewriteEngine On
+  RewriteCond %{REQUEST_URI} !\?
+	RewriteCond %{REQUEST_URI} !\&
+	RewriteCond %{REQUEST_URI} !\=
+	RewriteCond %{REQUEST_URI} !\.
+	RewriteCond %{REQUEST_URI} !\/$
+	RewriteRule ^(.*[^\/])$ /$1/ [R=301,L]
+	RewriteCond %{QUERY_STRING} ^PAGEN_2=1$
+	RewriteRule ^(.*)$ /$1? [R=301,L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !/bitrix/urlrewrite.php$
+  RewriteRule ^(.*)$ /bitrix/urlrewrite.php [L]
+</IfModule>
+
+<IfModule mod_dir.c>
+  DirectoryIndex index.php index.html
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive on
+  ExpiresByType image/jpeg "access plus 3 day"
+  ExpiresByType image/gif "access plus 3 day"
+</IfModule>
+
+redirect 301 /glass_processing/ /services/glass-and-mirror-processing/
+redirect 301 /glasspack/ /services/glasspack/
+redirect 301 /sale_of_glass/ /services/glass/
+redirect 301 /tempering/ /services/tempering-glass/zakalka-stekla/
+redirect 301 /production/glass_insulated/ /services/konstruktsii-iz-stekla/steklyannye-ograzhdeniya/
+redirect 301 /production/glass_insulated/glass_staircases/  /services/konstruktsii-iz-stekla/steklyannye-lestnitsy/
+redirect 301 /production/glass_insulated/shower_glass/ /services/dushevye-kabiny/
+redirect 301 /production/mirror/ /services/mirror/
+redirect 301 /production/sheetglass.php /services/glass/listovoe-steklo/
+redirect 301 /production/specglass/ /services/glass/
+redirect 301 /production/triplex/ /services/laminirovanie-stekla-tripleks/
+redirect 301 /production/film/ /services/glass-and-mirror-processing/plenka-dlya-stekla-i-zerkal/
+redirect 301 /production/furniture/ /services/
+redirect 301 /production/glass_canopies/ /services/konstruktsii-iz-stekla/
+redirect 301 /production/interiorglass/ /services/glass/arkhitekturnoe-interernoe-steklo/
+redirect 301 /production/sheetglass/ /services/glass/steklo-clear-float/
+redirect 301 /service/edgeglass/ /services/glass-and-mirror-processing/polirovka-i-shlifovka-stekla/
+redirect 301 /service/facet/ /services/glass-and-mirror-processing/fatset/
+redirect 301 /service/installglasscase/ /services/uslugi/montazh/
+redirect 301 /service/installpellicle/ /services/glass-and-mirror-processing/plenka-dlya-stekla-i-zerkal/
+redirect 301 /service/processingcenter/ /equipment/equipment-for-the-processing-of-edges-drilling-holes-making-notches/obrabatyvayushchiy-tsentr-z-bavelloni-alpa-450-4/
+redirect 301 /service/ultraviolet/ /services/ultrafioletovaya-skleyka-stekla/ultrafioletovaya-skleyka-stekla/
+redirect 301 /service/glass_doors.php /services/steklyannye-dveri/
+redirect 301 /service/glazed.php /services/glasspack/zamena-i-montazh-steklopaketov/
+redirect 301 /service/thread.php /services/glass-and-mirror-processing/avtomaticheskaya-rezka-stekla/
+redirect 301 /service/threadtriplex.php /services/glass-and-mirror-processing/avtomaticheskaya-rezka-stekla/
+
+php_value default_charset utf-8
+AddType 'text/html; charset=utf-8' .html .htm .shtml
