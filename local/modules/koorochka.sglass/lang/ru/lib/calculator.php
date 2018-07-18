@@ -1,4 +1,7 @@
 <?
+/**
+ * @var array $MESS
+ */
 $MESS["CALCULATOR_ENTITY_ID_FIELD"] = "ID";
 $MESS["CALCULATOR_ENTITY_LID_FIELD"] = "Сайт";
 $MESS["CALCULATOR_ENTITY_DATE_CREATE_FIELD"] = "Время создания";
