@@ -1,5 +1,5 @@
 <?php
-namespace Bitrix\Calculator;
+namespace Koorochka\Sglass;
 
 use Bitrix\Main,
     Bitrix\Main\Localization\Loc;
@@ -12,7 +12,8 @@ Loc::loadMessages(__FILE__);
  * <ul>
  * <li> ID int mandatory
  * <li> LID string(2) optional
- * <li> TIMESTAMP_X datetime mandatory default 'CURRENT_TIMESTAMP'
+ * <li> DATE_CREATE datetime optional
+ * <li> DATE_UPDATE datetime optional
  * <li> SORT int optional
  * <li> NAME string(256) mandatory
  * <li> PHONE string(256) mandatory
@@ -20,7 +21,7 @@ Loc::loadMessages(__FILE__);
  * <li> STUFF string(256) optional
  * <li> PRODUCT string(256) optional
  * <li> MESSAGE string optional
- * <li> FILE int optional
+ * <li> FILE string(256) optional
  * </ul>
  *
  * @package Bitrix\Calculator
@@ -57,10 +58,13 @@ class CalculatorTable extends Main\Entity\DataManager
                 'validation' => array(__CLASS__, 'validateLid'),
                 'title' => Loc::getMessage('CALCULATOR_ENTITY_LID_FIELD'),
             ),
-            'TIMESTAMP_X' => array(
+            'DATE_CREATE' => array(
                 'data_type' => 'datetime',
-                'required' => true,
-                'title' => Loc::getMessage('CALCULATOR_ENTITY_TIMESTAMP_X_FIELD'),
+                'title' => Loc::getMessage('CALCULATOR_ENTITY_DATE_CREATE_FIELD'),
+            ),
+            'DATE_UPDATE' => array(
+                'data_type' => 'datetime',
+                'title' => Loc::getMessage('CALCULATOR_ENTITY_DATE_UPDATE_FIELD'),
             ),
             'SORT' => array(
                 'data_type' => 'integer',
@@ -99,7 +103,8 @@ class CalculatorTable extends Main\Entity\DataManager
                 'title' => Loc::getMessage('CALCULATOR_ENTITY_MESSAGE_FIELD'),
             ),
             'FILE' => array(
-                'data_type' => 'integer',
+                'data_type' => 'string',
+                'validation' => array(__CLASS__, 'validateFile'),
                 'title' => Loc::getMessage('CALCULATOR_ENTITY_FILE_FIELD'),
             ),
         );
@@ -165,6 +170,17 @@ class CalculatorTable extends Main\Entity\DataManager
      * @return array
      */
     public static function validateProduct()
+    {
+        return array(
+            new Main\Entity\Validator\Length(null, 256),
+        );
+    }
+    /**
+     * Returns validators for FILE field.
+     *
+     * @return array
+     */
+    public static function validateFile()
     {
         return array(
             new Main\Entity\Validator\Length(null, 256),
