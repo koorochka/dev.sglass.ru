@@ -84,42 +84,17 @@ $APPLICATION->ShowHead();
     <div id="mobile-menu" class="mobile-menu-light">
         <div class="mCustomScrollbar light" data-mcs-theme="minimal-dark">
             <div class="header-mobile-menu hmm-v1">
-                <span class="has-icon sm-icon"><span class="lnr lnr-phone-handset icon-set-1 icon-xs "></span> <span class="sub-text-icon text-middle"><strong><a href="tel:+74956000101" rel="nofollow">+7 495 600-01-01</a></strong></span></span>
+
+                <p>
+                    <a href="tel:+74956000101 "><span class="lnr lnr-smartphone"></span> +7 495 600-01-01 </a></p>
+                    <a href="mailto:info@sglass.ru"><span class="lnr lnr-envelope"></span> info@sglass.ru </a>
+                </p>
+                <hr>
+                <p><a href="<?=SITE_DIR?>contacts/"><span class="lnr lnr-envelope"></span> <?=Loc::getMessage("CONTACTS")?> >></a></p>
+
                 <a href="#" class="ot-btn btn-rounded btn-hightlight-color">Заказать звонок</a>
             </div> <!-- Mobile Menu -->
             <?$APPLICATION->ShowViewContent("mobile-menu-top")?>
-            <div class="footer-mobile-menu fmm-v1">
-                <ul class="social">
-                    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li class="youtube"><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                    <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-
-                <ul class="address-footer-mobile">
-
-                    <li>
-                        <span clss="lnr lnr-map-marker"></span>
-                        <?$APPLICATION->IncludeComponent(
-                            "bitrix:main.include",
-                            ".default",
-                            array(
-                                "AREA_FILE_SHOW" => "file",
-                                "AREA_FILE_SUFFIX" => "sidebar",
-                                "AREA_FILE_RECURSIVE" => "Y",
-                                "COMPONENT_TEMPLATE" => ".default",
-                                "PATH" => "/inc/adress.php",
-                                "EDIT_MODE" => "html"
-                            ),
-                            false
-                        );?>
-                    </li>
-                    <li><a href="tel:+74956000101 "><span class="lnr lnr-smartphone"></span> +7 495 600-01-01 </a></li>
-                    <li><a href="mailto:info@sglass.ru"><span class="lnr lnr-envelope"></span> info@sglass.ru </a></li>
-
-                </ul>
-            </div>
         </div> <!-- /#rmm   -->
     </div>
 </div>
@@ -127,7 +102,7 @@ $APPLICATION->ShowHead();
 
 <div id="page">
     <?$APPLICATION->ShowPanel();?>
-    <div class="top-bar top-bar-dark">
+    <div class="top-bar top-bar-dark hidden-md hidden-lg">
         <div class="container">
             <?$APPLICATION->IncludeComponent(
                     "bitrix:main.include",
@@ -257,8 +232,6 @@ $APPLICATION->ShowHead();
                     </button>
                 </div>
             </div>
-
-
 
         </div>
     </div> <!-- End Top bar -->
