@@ -22,6 +22,7 @@ Loc::loadMessages(__FILE__);
  * <li> PRODUCT string(256) optional
  * <li> MESSAGE string optional
  * <li> FILE string(256) optional
+ * <li> RESULT string optional
  * </ul>
  *
  * @package Bitrix\Calculator
@@ -106,6 +107,10 @@ class CalculatorTable extends Main\Entity\DataManager
                 'data_type' => 'string',
                 'validation' => array(__CLASS__, 'validateFile'),
                 'title' => Loc::getMessage('CALCULATOR_ENTITY_FILE_FIELD'),
+            ),
+            'RESULT' => array(
+                'data_type' => 'text',
+                'title' => Loc::getMessage('CALCULATOR_ENTITY_RESULT_FIELD'),
             ),
         );
     }
