@@ -1,0 +1,1 @@
+<?require($_SERVER["DOCUMENT_ROOT"]."/local/modules/koorochka.sglass/admin/calculator_detail.php");?>
