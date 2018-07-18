@@ -14,4 +14,5 @@ $MESS["CALCULATOR_ENTITY_STUFF_FIELD"] = "Из чего делать";
 $MESS["CALCULATOR_ENTITY_PRODUCT_FIELD"] = "Что делать";
 $MESS["CALCULATOR_ENTITY_MESSAGE_FIELD"] = "Размеры и количество";
 $MESS["CALCULATOR_ENTITY_FILE_FIELD"] = "Чертеж / реквизиты";
+$MESS["CALCULATOR_ENTITY_RESULT_FIELD"] = "Результаты и заметки";
 ?>
