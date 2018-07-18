@@ -1,0 +1,32 @@
+.left-menu,
+.left-menu ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.left-menu ul{display: none;}
+.left-menu a .fa{margin-top: 6px;}
+.left-menu .active-list{
+    border: 1px solid #4c6f9e;
+    margin-bottom: 5px;
+}
+.left-menu .active-list a{
+    padding: 5px 10px;
+    display: block;
+}
+.left-menu .active-list a.active{
+    color: #fff;
+}
+.left-menu .active-list ul{
+    display: block;
+}
+
+/**
+  * Submenu
+  */
+.left-menu li li a{
+    color: #666;
+    font-size: 14px;
+}
+.left-menu .active-list li a.active{color: #23527c; font-weight: bold;}
+.left-menu .active-list li a:hover{color:#4c6f9e;}

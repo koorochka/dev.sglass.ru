@@ -1,0 +1,15 @@
+.projectContainer3column .element-item .img-contain-isotope{
+    height: 250px;
+}
+/**
+  * Adaptive
+  */
+@media (max-width:767px){
+    #page .project-terms{
+        float: none;
+    }
+    #page .project-terms a{
+        display: block;
+        margin-left: 0;
+    }
+}

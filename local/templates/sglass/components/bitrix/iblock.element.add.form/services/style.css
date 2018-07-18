@@ -1,0 +1,24 @@
+.call-back-form .btn-submit,
+.call-back-form .capcha-img{
+    margin-bottom: 20px !important;
+    margin-top: 0 !important;
+}
+.call-back-form .fa-inclined{
+	background: url("images/inclined-clip.png") no-repeat left center;
+	width: 16px;
+	height: 16px;
+}
+.call-back-form .fileUpload,
+.call-back-form .btn-refresh{
+	font-size: 15px;
+	font-weight: normal;
+}
+.call-back-form .btn-refresh{
+	padding: 0 10px;
+	white-space: nowrap;
+	min-width: 30px;
+}
+.call-back-form input[type="submit"]{
+	display: block;
+	width: 100%;
+}

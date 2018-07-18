@@ -1,0 +1,10 @@
+.services-list-contain .item-services{
+    width: 407px !important;
+}
+.services-list-contain .item-services:nth-child(3n+3) {
+    margin-right: 45px !important;
+    display: block;
+}
+.services-list-contain .item-services:nth-child(2n+2) {
+    margin-right: 0;
+}

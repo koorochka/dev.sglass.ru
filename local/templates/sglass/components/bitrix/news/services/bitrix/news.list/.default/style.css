@@ -1,0 +1,5 @@
+.services-description{border: 1px solid #4c6f9e; padding: 20px; margin-bottom: 20px;}
+.services-list-contain .item-services{min-height: inherit !important;}
+.services-list-contain .item-services:nth-child(3n+3) {
+    margin-right: 45px !important;
+}
