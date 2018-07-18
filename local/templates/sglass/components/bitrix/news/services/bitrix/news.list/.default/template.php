@@ -11,15 +11,22 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-if(!empty($arResult["SECTION"]["DESCRIPTION"])):
-    ?>
-    <section class="services-description padding-top-10 padding-bottom-20">
-        <?
-        if($arResult["SECTION"]["DESCRIPTION_TYPE"] == "text")
-            echo $arResult["SECTION"]["DESCRIPTION"];
-        else
-            echo $arResult["SECTION"]["~DESCRIPTION"];
-        ?>
+if(count($arResult["SECTION"]["UF_TAB_TITLE"]) > 0):
+?>
+    <section class="padding-top-10 padding-bottom-20">
+        <div class="tab-finance clearfix">
+            <ul class="nav nav-tabs">
+                <?foreach ($arResult["SECTION"]["UF_TAB_TITLE"] as $key=>$tab):?>
+                    <li class="<?=$key?"":"active"?>"><a data-toggle="tab" href="#<?=$key?>" aria-expanded="false"><?=$tab?></a></li>
+                <?endforeach;?>
+            </ul>
+
+            <div class="tab-content">
+                <?foreach ($arResult["SECTION"]["UF_TAB_DESC"] as $key=>$tab):?>
+                    <div id="<?=$key?>" class="<?=$key?"tab-pane fade":"tab-pane fade active in"?>"><?=$tab?></div>
+                <?endforeach;?>
+            </div>
+        </div>
     </section>
 <?endif;?>
     <!-- List services section -->
