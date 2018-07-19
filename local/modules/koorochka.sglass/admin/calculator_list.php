@@ -10,10 +10,66 @@ Loc::loadLanguageFile(__FILE__);
 Loader::includeModule("koorochka.sglass");
 
 $listTableId = "sglass_calculator";
-$oSort = new CAdminSorting($listTableId, "ID", "asc");
+$oSort = new CAdminSorting($listTableId, "SORT", "asc");
 $arOrder = (strtoupper($by) === "ID"? array($by => $order): array($by => $order, "ID" => "ASC"));
-$arFilter = array();
 $adminList = new CAdminList($listTableId, $oSort);
+$arFilter = array();
+// ******************************************************************** //
+//                           ФИЛЬТР                                     //
+// ******************************************************************** //
+
+// опишем элементы фильтра
+$FilterArr = Array(
+    "find_id",
+    "find_sort",
+    "find_name",
+    "find_phone",
+    "find_email",
+    "find_stuff",
+    "find_product",
+    "find_create_1",
+    "find_create_2",
+    "find_update_1",
+    "find_update_2"
+);
+
+// инициализируем фильтр
+$adminList->InitFilter($FilterArr);
+
+if(intval($find_id) > 0)
+    $arFilter["ID"] = $find_id;
+
+if(intval($find_sort) > 0)
+    $arFilter["SORT"] = $find_sort;
+
+if(!empty($find_name))
+    $arFilter["?NAME"] = $find_name;
+
+if(!empty($find_name))
+    $arFilter["?PHONE"] = $find_name;
+
+if(!empty($find_name))
+    $arFilter["?EMAIL"] = $find_name;
+
+if(!empty($find_name))
+    $arFilter["?STUFF"] = $find_name;
+
+if(!empty($find_name))
+    $arFilter["?PRODUCT"] = $find_name;
+
+if(!empty($find_create_1))
+    $arFilter[">=DATE_CREATE"] = $find_create_1;
+
+if(!empty($find_create_2))
+    $arFilter["<=DATE_CREATE"] = $find_create_2;
+
+if(!empty($find_update_1))
+    $arFilter[">=DATE_UPDATE"] = $find_update_1;
+
+if(!empty($find_update_2))
+    $arFilter["<=DATE_UPDATE"] = $find_update_2;
+
+
 // ******************************************************************** //
 //                ОБРАБОТКА ДЕЙСТВИЙ НАД ЭЛЕМЕНТАМИ СПИСКА              //
 // ******************************************************************** //
@@ -167,7 +223,10 @@ $adminList->AddFooter(
         ),
     )
 );
-
+// групповые действия
+$adminList->AddGroupActionTable(Array(
+    "delete"=>Loc::getMessage("MAIN_ADMIN_LIST_DELETE"), // удалить выбранные элементы
+));
 // ******************************************************************** //
 //                АДМИНИСТРАТИВНОЕ МЕНЮ                                 //
 // ******************************************************************** //
@@ -194,6 +253,106 @@ $adminList->CheckListMode();
 $APPLICATION->SetTitle(Loc::getMessage("ORDER_TITLE"));
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
+
+// ******************************************************************** //
+//                ВЫВОД ФИЛЬТРА                                         //
+// ******************************************************************** //
+
+// создадим объект фильтра
+$oFilter = new CAdminFilter(
+    $listTableId."_filter",
+    array(
+        $cols["ID"]["title"],
+        $cols["SORT"]["title"],
+        $cols["NAME"]["title"],
+        $cols["PHONE"]["title"],
+        $cols["EMAIL"]["title"],
+        $cols["STUFF"]["title"],
+        $cols["PRODUCT"]["title"],
+        $cols["DATE_CREATE"]["title"],
+        $cols["DATE_UPDATE"]["title"]
+    )
+);
+?>
+<form name="find_form" method="get" action="<?echo $APPLICATION->GetCurPage();?>">
+    <?$oFilter->Begin();?>
+
+    <tr>
+        <td><?=$cols["ID"]["title"]?>:</td>
+        <td>
+            <input type="text"
+                   name="find_id"
+                   size="47"
+                   value="<?echo htmlspecialchars($find_id)?>">
+        </td>
+    </tr>
+
+    <tr>
+        <td><?=$cols["SORT"]["title"]?>:</td>
+        <td>
+            <input type="text"
+                   name="find_sort"
+                   size="47"
+                   value="<?echo htmlspecialchars($find_sort)?>">
+        </td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["NAME"]["title"]?>:</b></td>
+        <td><input type="text"
+                   name="find_name"
+                   value="<?echo htmlspecialcharsex($find_name)?>"
+                   size="47">&nbsp;<?=ShowFilterLogicHelp()?></td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["PHONE"]["title"]?>:</b></td>
+        <td><input type="text"
+                   name="find_phone"
+                   value="<?echo htmlspecialcharsex($find_phone)?>"
+                   size="47">&nbsp;<?=ShowFilterLogicHelp()?></td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["EMAIL"]["title"]?>:</b></td>
+        <td><input type="text"
+                   name="find_email"
+                   value="<?echo htmlspecialcharsex($find_email)?>"
+                   size="47">&nbsp;<?=ShowFilterLogicHelp()?></td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["STUFF"]["title"]?>:</b></td>
+        <td><input type="text"
+                   name="find_stuff"
+                   value="<?echo htmlspecialcharsex($find_stuff)?>"
+                   size="47">&nbsp;<?=ShowFilterLogicHelp()?></td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["PRODUCT"]["title"]?>:</b></td>
+        <td><input type="text"
+                   name="find_product"
+                   value="<?echo htmlspecialcharsex($find_product)?>"
+                   size="47">&nbsp;<?=ShowFilterLogicHelp()?></td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["DATE_CREATE"]["title"]?>:</b></td>
+        <td><?=CalendarPeriod("find_create_1", htmlspecialcharsex($find_create_1), "find_create_2", htmlspecialcharsex($find_create_2), "find_form", "Y")?></td>
+    </tr>
+
+    <tr>
+        <td><b><?=$cols["DATE_UPDATE"]["title"]?>:</b></td>
+        <td><?=CalendarPeriod("find_update_1", htmlspecialcharsex($find_update_1), "find_update_2", htmlspecialcharsex($find_update_2), "find_form", "Y")?></td>
+    </tr>
+
+    <?
+    $oFilter->Buttons(array("table_id"=>$listTableId,"url"=>$APPLICATION->GetCurPage(),"form"=>"find_form"));
+    $oFilter->End();
+    ?>
+</form>
+<?
 $adminList->DisplayList();
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_admin.php");
