@@ -68,6 +68,18 @@ if(($arID = $adminList->GroupAction()) && $POST_RIGHT=="W")
         switch($_REQUEST['action']) {
             // удаление
             case "delete":
+                // item check for existing files
+                $rsData = CalculatorTable::getList(array('filter' => array("ID" => $ID)));
+                if($arData = $rsData->fetch())
+                {
+                    if(!empty($arData["FILE"])){
+                        $arData["FILE"] = unserialize($arData["FILE"]);
+                        foreach ($arData["FILE"] as $file){
+                            CFile::Delete($file);
+                        }
+                    }
+                }
+                // delete process
                 CalculatorTable::delete($ID);
                 break;
         }
@@ -131,8 +143,13 @@ while ($arRes = $myData->GetNext())
                 "ICON" => "view",
                 "TEXT" => Loc::getMessage("ORDER_VIEW"),
                 "ACTION" => $adminList->ActionRedirect("sglass_call_calculator_detail.php?ID=" . $arRes["ID"] . "&lang=" . LANG)
+            ),
+            array("SEPARATOR"=>true),
+            array(
+                "ICON"=>"delete",
+                "TEXT"=>Loc::getMessage("ORDER_DELETE"),
+                "ACTION"=>"if(confirm('".Loc::getMessage('ORDER_CONFIRM_DELETE', array("ID" => $arRes["ID"]))."')) ".$adminList->ActionDoGroup($arRes["ID"], "delete")
             )
-
         ));
     }
 }
