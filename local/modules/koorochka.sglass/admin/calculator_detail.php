@@ -13,6 +13,7 @@ if ($POST_RIGHT == "D")
     $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 $ID = intval($_REQUEST["ID"]);
 $cols = CalculatorTable::getMap();
+$message = array();
 // ******************************************************************** //
 //                ОБРАБОТКА ИЗМЕНЕНИЙ ФОРМЫ                             //
 // ******************************************************************** //
@@ -28,21 +29,32 @@ if(
 )
 {
     $arFields = array();
-    $cols = CalculatorTable::getMap();
     foreach ($cols as $id => $col){
+        // form fields array
         if(is_set($_POST[$id])){
             $arFields[$id] = $_POST[$id];
         }
+        // validate
+        if($col["required"] && empty($_POST[$id])){
+            $message[] = Loc::getMessage("ORDER_ERROR_EMPTY", array("FIELD" => $col["title"]));
+        }
+        // validate email field
+        if($id == "EMAIL" && !check_email($_POST[$id])){
+            $message[] = Loc::getMessage("ORDER_ERROR_EMAIL");
+        }
     }
-    if($arFields){
+    if($arFields && empty($message)){
         unset($arFields["ID"]);
         // сохранение данных
         if($ID > 0)
         {
+            $arFields["DATE_UPDATE"] = new Bitrix\Main\Type\DateTime();
             $result = CalculatorTable::update($ID, $arFields);
         }
         else
         {
+            $arFields["DATE_CREATE"] = new Bitrix\Main\Type\DateTime();
+            $arFields["DATE_UPDATE"] = new Bitrix\Main\Type\DateTime();
             $result = CalculatorTable::add($arFields);
         }
 
@@ -59,8 +71,9 @@ if(
             $message = $result->getErrorMessages();
         }
 
+    }else{
+        $message = implode("<br>", $message);
     }
-
 }
 
 // ******************************************************************** //
@@ -72,7 +85,13 @@ if($ID > 0)
 }
 $aTabs = array(array("DIV" => "tab1", "TAB" => Loc::getMessage("ORDER_DATA")));
 $tabControl = new CAdminTabControl("tabControl", $aTabs);
-$APPLICATION->SetTitle(Loc::getMessage("ORDER_TITLE", array("ID" => $ID)));
+
+if($ID > 0){
+    $APPLICATION->SetTitle(Loc::getMessage("ORDER_TITLE_EDIT", array("ID" => $ID)));
+}else{
+    $APPLICATION->SetTitle(Loc::getMessage("ORDER_TITLE_ADD"));
+}
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
 // конфигурация административного меню
 $aMenu = array(
@@ -96,7 +115,7 @@ if($_REQUEST["mess"] == "ok" && $ID>0)
     CAdminMessage::ShowMessage(array("MESSAGE"=> Loc::getMessage("ORDER_SAVED"), "TYPE"=>"OK"));
 
 if($message)
-    echo $message->Show();
+    CAdminMessage::ShowMessage(array("MESSAGE"=> $message, "TYPE"=>"ERROR"))
 ?>
 
 <?
@@ -115,12 +134,21 @@ $cols = CalculatorTable::getMap();
 foreach ($cols as $id => $col):
     if($id == "LID")
         continue;
+    if(!$ID && ($id == "ID" || $id == "DATE_CREATE" || $id == "DATE_UPDATE"))
+        continue;
     ?>
     <tr>
-        <td width="240" align="right"><strong><?=$col["title"]?>:</strong></td>
+        <td width="240" align="right">
+            <?if($col["required"]):?>
+                <strong><?=$col["title"]?><span class="required">*</span>:</strong>
+            <?else:?>
+                <?=$col["title"]?>
+            <?endif;?>
+        </td>
         <td width="10"></td>
         <td>
         <?if(
+            $id == "SORT" ||
             $id == "NAME" ||
             $id == "PHONE" ||
             $id == "EMAIL" ||
