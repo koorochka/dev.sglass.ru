@@ -1,7 +1,10 @@
 <?
+/**
+ * @global CMain $APPLICATION
+ */
 use Bitrix\Main\Localization\Loc,
     Bitrix\Main\Loader,
-    Koorochka\Sglass;
+    Koorochka\Sglass\CalculatorTable;
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 Loc::loadLanguageFile(__FILE__);
 Loader::includeModule("koorochka.sglass");
@@ -15,9 +18,44 @@ $adminList = new CAdminList($listTableId, $oSort);
 //                ОБРАБОТКА ДЕЙСТВИЙ НАД ЭЛЕМЕНТАМИ СПИСКА              //
 // ******************************************************************** //
 // Даю права на запись
-$POST_RIGHT="W";
-// $POST_RIGHT = $APPLICATION->GetGroupRight("main");
+$POST_RIGHT = $APPLICATION->GetGroupRight("main");
 // обработка одиночных и групповых действий
+
+// сохранение отредактированных элементов
+if($adminList->EditAction() && $POST_RIGHT=="W")
+{
+    // пройдем по списку переданных элементов
+    foreach($FIELDS as $ID=>$arFields)
+    {
+        if(!$adminList->IsUpdated($ID))
+            continue;
+
+        // сохраним изменения каждого элемента
+        $DB->StartTransaction();
+        $ID = IntVal($ID);
+
+        $rsData = CalculatorTable::getList(array('filter' => array("ID" => $ID)));
+        
+        if($arData = $rsData->fetch())
+        {
+            foreach($arFields as $key=>$value)
+                $arData[$key]=$value;
+
+            $result = CalculatorTable::update($ID, $arData);
+            if(!$result->isSuccess())
+            {
+                $adminList->AddGroupError(Loc::getMessage("ORDER_SAVE_ERROR")." ".$result->getErrorMessages(), $ID);
+            }
+        }
+        else
+        {
+            $adminList->AddGroupError(Loc::getMessage("ORDER_SAVE_ERROR")." ".Loc::getMessage("NO_ORDER"), $ID);
+        }
+        $DB->Commit();
+    }
+}
+
+
 if(($arID = $adminList->GroupAction()) && $POST_RIGHT=="W")
 {
 
@@ -30,7 +68,7 @@ if(($arID = $adminList->GroupAction()) && $POST_RIGHT=="W")
         switch($_REQUEST['action']) {
             // удаление
             case "delete":
-                Sglass\OrderTable::delete($ID);
+                CalculatorTable::delete($ID);
                 break;
         }
     }
@@ -39,7 +77,7 @@ if(($arID = $adminList->GroupAction()) && $POST_RIGHT=="W")
 // ******************************************************************** //
 //                            ГЕНЕРАЦИЯ СПИСКА                          //
 // ******************************************************************** //
-$myData = Sglass\CalculatorTable::getList(
+$myData = CalculatorTable::getList(
     array(
         'filter' => $arFilter,
         'order' => $arOrder
@@ -51,12 +89,11 @@ $myData->NavStart();
 
 $adminList->NavText($myData->GetNavPrint(Loc::getMessage("MAIN_ADMIN_NAV")));
 
-$cols = Sglass\CalculatorTable::getMap();
+$cols = CalculatorTable::getMap();
 $colHeaders = array();
 foreach ($cols as $colId => $col)
 {
     if(
-        $colId == "SORT" ||
         $colId == "DATE_UPDATE" ||
         $colId == "RESULT" ||
         $colId == "FILE" ||
@@ -84,6 +121,7 @@ while ($arRes = $myData->GetNext())
     $row->AddInputField("SORT");
     $row->AddInputField("NAME");
     $row->AddInputField("PHONE");
+    $row->AddInputField("EMAIL");
 
 
     if ($POST_RIGHT>="W")
@@ -113,6 +151,27 @@ $adminList->AddFooter(
     )
 );
 
+// ******************************************************************** //
+//                АДМИНИСТРАТИВНОЕ МЕНЮ                                 //
+// ******************************************************************** //
+
+// сформируем меню из одного пункта - добавление рассылки
+$aContext = array(
+    array(
+        "TEXT"=>Loc::getMessage("ORDER_ADD"),
+        "LINK"=>"sglass_call_calculator_detail.php?lang=".LANG,
+        "TITLE"=>Loc::getMessage("ORDER_ADD"),
+        "ICON"=>"btn_new",
+    ),
+);
+// и прикрепим его к списку
+$adminList->AddAdminContextMenu($aContext);
+
+// ******************************************************************** //
+//                ВЫВОД                                                 //
+// ******************************************************************** //
+
+// альтернативный вывод
 $adminList->CheckListMode();
 
 $APPLICATION->SetTitle(Loc::getMessage("ORDER_TITLE"));
