@@ -74,7 +74,7 @@ if(
                             "EDIT_MODE" => "html"
                         ),
                         false
-                    );?>
+                    );?>&nbsp;
 				</div>
 				<div class="footer-col-2">
                     <?$APPLICATION->IncludeComponent(
@@ -142,14 +142,14 @@ if(
 <!-- Back To Top -->
 
 <?$APPLICATION->IncludeComponent(
-	"koorochka:order.call",
+	"koorochka:calculator.form",
 	"",
 	array(
 		"USE_CAPTCHA" => "N",
 		"TITLE" => "Заказ звонка",
 		"OK_TEXT" => "В ближайшее время мы с вами свяжемся!",
 		"EMAIL_TO" => "ajoq@ya.ru",
-		"FORM" => "call-order-form",
+		"FORM" => "calculator-form",
 		"REQUIRED_FIELDS" => array(
 			0 => "NAME",
 			1 => "PHONE",
