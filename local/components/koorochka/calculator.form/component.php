@@ -107,6 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     if($file){
                         $arFields["FILE"][] = $file;
                     }
+                    $arFiles = $arFields["FILE"];
                 }
                 $arFields["FILE"] = serialize($arFields["FILE"]);
             }
@@ -128,8 +129,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 ));
                 if($result->isSuccess()){
                     $arFields["ID"] = $result->getId();
-                    // send event to admin
-                    CEvent::Send($arParams["EVENT_NAME"], SITE_ID, $arFields);
+                    // send event message to admin
+                    CEvent::Send($arParams["EVENT_NAME"], SITE_ID, $arFields, "Y", 16, $arFiles);
+                    // send event message to user
+                    CEvent::Send($arParams["EVENT_NAME"], SITE_ID, $arFields, "Y", 15);
                 }
             }
 		}
