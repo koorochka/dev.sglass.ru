@@ -2,11 +2,10 @@
 /**
  * @var CMain $APPLICATION
  */
-#$_SERVER['DOCUMENT_ROOT'] = "/home/s/sglass/new.sglass.ru/public_html/";
-#$DOCUMENT_ROOT = "/home/s/sglass/new.sglass.ru/public_html/";
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
 
 
+d($_FILES);
 
 ?>
 
@@ -16,10 +15,10 @@ require($_SERVER['DOCUMENT_ROOT'].'/bitrix/header.php');
             <input type="file"
                    name="file[]">
         </div>
-        <input type="submit"
-               value="Submit"
-               class="btn btn-danger">
     <?endfor;?>
+    <input type="submit"
+           value="Submit"
+           class="btn btn-danger">
 </form>
 
 <?require($_SERVER['DOCUMENT_ROOT'].'/bitrix/footer.php');?>
