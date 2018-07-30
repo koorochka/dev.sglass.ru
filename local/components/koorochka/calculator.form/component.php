@@ -73,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 			else
 				$arResult["ERROR"]["CAPTCHA"] = Loc::getMessage("MF_CAPTHCA_EMPTY");
 
-		}			
+		}
 		if(empty($arResult["ERROR"]))
 		{
 		    // Event fields
@@ -86,13 +86,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 				"EMAIL_TO" => $arParams["EMAIL_TO"],
 				"TEXT" => $_POST["MESSAGE"],
 			);
+
+
 			// save and serialize files
             if(!empty($_FILES["user_file"]["tmp_name"])){
                 $arFields["FILE"] = array();
-                foreach ($_FILES["user_file"]["tmp_name"] as $file){
-                    $file = CFile::MakeFileArray($file);
+
+                foreach ($_FILES["user_file"]["tmp_name"] as $k=>$file){
+                    if($file){
+                        $file=Array(
+                            "name" => $_FILES[user_file][name][$k],
+                            "size" => $_FILES[user_file][size][$k],
+                            "tmp_name" => $file,
+                            "type" => "",
+                            "old_file" => "",
+                            "del" => "Y",
+                            "MODULE_ID" => "koorochka.sglass");
+                    }
                     $file = CFile::SaveFile($file, "sglass");
-                    $arFields["FILE"][] = $file;
+                    if($file){
+                        $arFields["FILE"][] = $file;
+                    }
                 }
                 $arFields["FILE"] = serialize($arFields["FILE"]);
             }
@@ -114,7 +128,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 ));
                 if($result->isSuccess()){
                     $arFields["ID"] = $result->getId();
-                    // send event
+                    // send event to admin
                     CEvent::Send($arParams["EVENT_NAME"], SITE_ID, $arFields);
                 }
             }
@@ -137,7 +151,6 @@ if($arResult["ERROR"] === Array())
 
 if($arParams["USE_CAPTCHA"] == "Y")
 	$arResult["capCode"] =  htmlspecialcharsbx($APPLICATION->CaptchaGetCode());
-
 
 if($_REQUEST["action"] == "json")
 {
