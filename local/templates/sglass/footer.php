@@ -143,7 +143,7 @@ if(
 
 <?$APPLICATION->IncludeComponent(
 	"koorochka:calculator.form",
-	"",
+	"modal",
 	array(
 		"USE_CAPTCHA" => "N",
 		"TITLE" => "Заказ звонка",
@@ -153,7 +153,8 @@ if(
 		"REQUIRED_FIELDS" => array(
 			0 => "NAME",
 			1 => "PHONE",
-            2 => "AGREE"
+			2 => "EMAIL",
+            3 => "AGREE"
 		),
 		"EVENT_MESSAGE_ID" => array(
 			0 => "10",
