@@ -140,32 +140,3 @@ $APPLICATION->AddHeadString(
     </div>
 </section>
 
-<?$APPLICATION->IncludeComponent(
-	"koorochka:add.question",
-	"",
-	array(
-		"COMPONENT_TEMPLATE" => "contacts",
-		"USE_CAPTCHA" => "Y",
-		"TITLE" => "Напишите нам",
-		"OK_TEXT" => "Спасибо за вопрос. В ближайшее время мы с вами свяжемся!",
-		"EMAIL_TO" => "ajoq@ya.ru",
-		"IBLOCK_ELEMENT_ID" => $ElementID,
-		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-		"IBLOCK_ID" => $arParams["IBLOCK_ID"],
-		"FORM" => $arParams["IBLOCK_TYPE"] . "-" . $arParams["IBLOCK_ID"],
-		"REQUIRED_FIELDS" => array(
-			0 => "NAME",
-			1 => "EMAIL",
-            2 => "AGREE"
-		),
-		"EVENT_MESSAGE_ID" => array(
-			0 => "9",
-		),
-		"AJAX_MODE" => "Y",
-		"AJAX_OPTION_JUMP" => "N",
-		"AJAX_OPTION_STYLE" => "N",
-		"AJAX_OPTION_HISTORY" => "N",
-		"AJAX_OPTION_ADDITIONAL" => "undefined"
-	),
-	false
-);?>
