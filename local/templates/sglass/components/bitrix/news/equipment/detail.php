@@ -169,7 +169,3 @@ $APPLICATION->AddHeadString(
 	),
 	false
 );?>
-
-<?
-$APPLICATION->SetTitle($ElementMetaTitle);
-?>
