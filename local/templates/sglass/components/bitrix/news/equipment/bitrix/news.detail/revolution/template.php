@@ -62,15 +62,8 @@ $this->setFrameMode(true);
 
 	<div class="h-block">
 		<div class="row">
-			<div class="col-sm-6 col-md-8 left-hblock">
+			<div class="col-sm-12 left-hblock">
 				<p><?=$arResult["PREVIEW_TEXT"]?></p>
-			</div>
-			<div class="col-sm-6 col-md-4 right-hblock">
-				<div class="brochures-download text-center">
-					<button type="button"
-							data-toggle="modal" data-target="#add-question"
-							class="btn btn-success"><?=GetMessage("SERVICE_ADD_QWESTION")?></button>
-				</div>
 			</div>
 		</div><!-- End row -->
 	</div><!-- End H-block -->
