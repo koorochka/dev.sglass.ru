@@ -57,7 +57,7 @@ $this->setFrameMode(true);
 			<div class="col-sm-6 col-md-8 left-hblock">
 				<p><?=$arResult["PREVIEW_TEXT"]?></p>
 			</div>
-			<div class="col-sm-6 col-md-4 right-hblock">
+			<div class="col-sm-6 col-md-4 text-right">
                 <img src="<?=$arResult["DISPLAY_PROPERTIES"]["COUNTRY"]["VALUE_XML_ID"]?>"
                      title="<?=$arResult["DISPLAY_PROPERTIES"]["COUNTRY"]["VALUE"]?>">
                 <img src="<?=$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE_XML_ID"]?>"
