@@ -66,6 +66,7 @@ $this->setFrameMode(true);
 	$component
 );?>
 
+
 <?$APPLICATION->IncludeComponent(
     "koorochka:medialib.list",
     "photo",
